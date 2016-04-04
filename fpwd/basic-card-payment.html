@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta lang="" property="dc:language" content="en">
+    <title>Basic Card Payment</title>
+    <meta charset="utf-8">
+    
+    
+    <style>
+    dt { margin-top: 0.75em; }
+    table { margin-top: 0.75em; border-collapse:collapse; border-style:hidden hidden none hidden }
+    table thead { border-bottom:solid }
+    table tbody th:first-child { border-left:solid }
+    table td, table th { border-left:solid; border-right:solid; border-bottom:solid thin; vertical-align:top; padding:0.2em }
+    li { margin-top: 0.5em; margin-bottom: 0.5em;}
+    </style>
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.ednote-title, div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title, div.ednote-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.ednote-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.ednote, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .ednote > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .ednote, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.ednote,  div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.ednote, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note, .ednote {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+
+li.task-list-item {
+    list-style: none;
+}
+
+input.task-list-item-checkbox {
+    margin: 0 0.35em 0.25em -1.6em;
+    vertical-align: middle;
+}
+</style><style>/* --- WEB IDL --- */
+pre.idl {
+    border-top: 1px solid #90b8de;
+    border-bottom: 1px solid #90b8de;
+    padding:    1em;
+    line-height:    120%;
+}
+
+@media print {
+  pre.idl {
+      white-space: pre-wrap;
+  }
+}
+
+pre.idl::before {
+    content:    "WebIDL";
+    display:    block;
+    width:      150px;
+    background: #90b8de;
+    color:  #fff;
+    font-family:    sans-serif;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+.idlType {
+    color:  #ff4500;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+
+/*.idlModule*/
+/*.idlModuleID*/
+/*.idlInterface*/
+.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
+    font-weight:    bold;
+    color:  #005a9c;
+}
+a.idlEnumItem {
+    color:  #000;
+    border-bottom:  1px dotted #ccc;
+    text-decoration: none;
+}
+
+.idlSuperclass {
+    font-style: italic;
+    color:  #005a9c;
+}
+
+/*.idlAttribute*/
+.idlAttrType, .idlFieldType, .idlMemberType {
+    color:  #005a9c;
+}
+.idlAttrName, .idlFieldName, .idlMemberName {
+    color:  #ff4500;
+}
+.idlAttrName a, .idlFieldName a, .idlMemberName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlMethod*/
+.idlMethType, .idlCallbackType {
+    color:  #005a9c;
+}
+.idlMethName {
+    color:  #ff4500;
+}
+.idlMethName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlCtor*/
+.idlCtorName {
+    color:  #ff4500;
+}
+.idlCtorName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlParam*/
+.idlParamType {
+    color:  #005a9c;
+}
+.idlParamName, .idlDefaultValue {
+    font-style: italic;
+}
+
+.extAttr {
+    color:  #666;
+}
+
+/*.idlSectionComment*/
+.idlSectionComment {
+    color: gray;
+}
+
+/*.idlIterable*/
+.idlIterableKeyType, .idlIterableValueType {
+    color:  #005a9c;
+}
+
+/*.idlMaplike*/
+.idlMaplikeKeyType, .idlMaplikeValueType {
+    color:  #005a9c;
+}
+
+/*.idlConst*/
+.idlConstType {
+    color:  #005a9c;
+}
+.idlConstName {
+    color:  #ff4500;
+}
+.idlConstName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlException*/
+.idlExceptionID {
+    font-weight:    bold;
+    color:  #c00;
+}
+
+.idlTypedefID, .idlTypedefType {
+    color:  #005a9c;
+}
+
+.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+    color:  #c00;
+    font-weight:    normal;
+}
+
+.excName a {
+    font-family:    monospace;
+}
+
+.idlRaises a.idlType, .excName a.idlType {
+    border-bottom:  1px dotted #c00;
+}
+
+.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+    width:  45px;
+    text-align: center;
+}
+.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+
+.idlImplements a {
+    font-weight:    bold;
+}
+
+dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
+    margin-left:    2em;
+}
+
+.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
+    font-weight:    normal;
+}
+
+.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
+    font-weight:    bold;
+    color:  #000;
+    font-family:    monospace;
+}
+
+.attributes dt code, .fields dt code, .dictionary-members dt code {
+    background:  #ffffd2;
+}
+
+.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+    color:  #005a9c;
+    background:  transparent;
+    font-family:    inherit;
+    font-weight:    normal;
+    font-style: italic;
+}
+
+.methods dt code {
+    background:  #d9e6f8;
+}
+
+.constants dt code {
+    background:  #ddffd2;
+}
+
+.constructors dt code {
+    background:  #cfc;
+}
+
+.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
+    margin-bottom:  1em;
+}
+
+table.parameters, table.exceptions {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    margin: 0.5em 0;
+    width:  100%;
+}
+table.parameters { border-bottom:  1px solid #90b8de; }
+table.exceptions { border-bottom:  1px solid #deb890; }
+
+.parameters th, .exceptions th {
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+    font-weight:    normal;
+    text-shadow:    #666 1px 1px 0;
+}
+.parameters th { background: #90b8de; }
+.exceptions th { background: #deb890; }
+
+.parameters td, .exceptions td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.parameters tr:first-child td, .exceptions tr:first-child td {
+    border-top: none;
+}
+
+.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+    width:  100px;
+}
+
+.parameters td.prmType {
+    width:  120px;
+}
+
+table.exceptions table {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    width:  100%;
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--><script id="initialUserConfig" type="application/json">{
+  "shortName": "payment-method-basic-card",
+  "edDraftURI": "https://w3c.github.io/browser-payment-api/basic-card-payment.html",
+  "specStatus": "ED",
+  "editors": [
+    {
+      "name": "Adrian Bateman",
+      "company": "Microsoft Corporation"
+    },
+    {
+      "name": "Zach Koch",
+      "company": "Google"
+    },
+    {
+      "name": "Richard Barnes",
+      "company": "Mozilla Foundation"
+    },
+    {
+      "name": "Roy McElmurry",
+      "company": "Facebook"
+    }
+  ],
+  "useExperimentalStyles": true,
+  "license": "w3c-software-doc",
+  "wg": "Web Payments Working Group",
+  "wgURI": "https://www.w3.org/Payments/WG/",
+  "wgPublicList": "public-payments-wg",
+  "wgPatentURI": "https://www.w3.org/2004/01/pp-impl/83744/status",
+  "issueBase": "https://github.com/w3c/browser-payment-api/issues/",
+  "localBiblio": {
+    "PAYMENTARCH": {
+      "title": "Payment Request Architecture",
+      "href": "architecture.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    },
+    "PAYMENTREQUESTAPI": {
+      "title": "Payment Request API",
+      "href": "paymentrequest.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    },
+    "METHODIDENTIFIERS": {
+      "title": "Payment Method Identifiers",
+      "href": "method-identifiers.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    }
+  }
+}</script></head>
+  <body class="h-entry toc-inline" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <p>
+            <a class="logo" href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" alt="W3C"></a>
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">Basic Card Payment</h1>
+  <h2 id="w3c-first-public-working-draft-19-april-2016"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2016-04-19">19 April 2016</time></h2>
+  <dl>
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2016/WD-payment-method-basic-card-20160419/">http://www.w3.org/TR/2016/WD-payment-method-basic-card-20160419/</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/payment-method-basic-card/">http://www.w3.org/TR/payment-method-basic-card/</a></dd>
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://w3c.github.io/browser-payment-api/basic-card-payment.html">https://w3c.github.io/browser-payment-api/basic-card-payment.html</a></dd>
+    <dt>Editors:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Adrian Bateman</span>, Microsoft Corporation</span>
+<span property="rdf:rest" resource="_:editor1"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor1"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Zach Koch</span>, Google</span>
+<span property="rdf:rest" resource="_:editor2"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor2"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Richard Barnes</span>, Mozilla Foundation</span>
+<span property="rdf:rest" resource="_:editor3"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor3"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Roy McElmurry</span>, Facebook</span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+  </dl>
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2016
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). 
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+            <a rel="license" href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a>
+        rules apply.
+      </p>
+  <hr title="Separator for header">
+</div>
+    <section id="abstract" class="introductory" property="dc:abstract"><h2 id="h-abstract" resource="#h-abstract"><span property="xhv:role" resource="xhv:heading">Abstract</span></h2>
+      <p>
+        The Basic Card Payment specification describes the data formats used by the
+        PaymentRequest API [<cite><a class="bibref" href="#bib-PAYMENTREQUESTAPI">PAYMENTREQUESTAPI</a></cite>] to support payment by payment cards such as
+        credit or debit cards.
+      </p>
+    </section><section id="sotd" class="introductory"><h2 id="h-sotd" resource="#h-sotd"><span property="xhv:role" resource="xhv:heading">Status of This Document</span></h2>
+        <p>
+          <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/.</em>
+        </p>
+          
+      <p>
+        The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues">a
+        list of all bug reports that the group has not yet addressed</a>.
+        This draft highlights some of the pending issues that are still to be discussed in the working
+        group. No decision has been taken on the outcome of these issues including whether they are valid.
+        Pull requests with proposed specification text for outstanding issues are strongly encouraged.
+      </p>
+      <p>
+        This specification was derived from a report published previously by the
+        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
+      </p>
+    
+          <p>
+            This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a First Public Working Draft.
+              This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
+              If you wish to make comments regarding this document, please send them to
+              <a href="mailto:public-payments-wg@w3.org">public-payments-wg@w3.org</a>
+              (<a href="mailto:public-payments-wg-request@w3.org?subject=subscribe">subscribe</a>,
+              <a href="http://lists.w3.org/Archives/Public/public-payments-wg/">archives</a>).
+            
+              All comments are welcome.
+          </p>
+            <p>
+              Publication as a First Public Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+              Membership. This is a draft document and may be updated, replaced or obsoleted by other
+              documents at any time. It is inappropriate to cite this document as other than work in
+              progress.
+            </p>
+          <p>
+              This document was produced by
+              a group
+               operating under the
+              <a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+              Policy</a>.
+                <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
+                disclosures</a>
+              made in connection with the deliverables of
+              the group; that page also includes
+              instructions for disclosing a patent. An individual who has actual knowledge of a patent
+              which the individual believes contains
+              <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+              Claim(s)</a> must disclose the information in accordance with
+              <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+              6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          </p>
+            <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2015/Process-20150901/">1 September 2015 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+            </p>
+          
+</section><nav id="toc"><h2 class="introductory" id="table-of-contents" resource="#table-of-contents"><span property="xhv:role" resource="xhv:heading">Table of Contents</span></h2><ul class="toc" role="directory"><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">1. </span>Introduction</a></li><li class="tocline"><a href="#dependencies" class="tocxref"><span class="secno">2. </span>Dependencies</a></li><li class="tocline"><a href="#method-id" class="tocxref"><span class="secno">3. </span>Payment Method Identifier</a></li><li class="tocline"><a href="#init-data" class="tocxref"><span class="secno">4. </span>Payment Method Specific Data for the PaymentRequest constructor</a></li><li class="tocline"><a href="#response" class="tocxref"><span class="secno">5. </span>Payment Method Response</a><ul class="toc"><li class="tocline"><a href="#basiccardresponse" class="tocxref"><span class="secno">5.1 </span>BasicCardResponse</a></li><li class="tocline"><a href="#billingaddress" class="tocxref"><span class="secno">5.2 </span>BillingAddress</a></li></ul></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li></ul></li></ul></nav>
+
+    
+    
+    <section class="informative" id="introduction" typeof="bibo:Chapter" resource="#introduction" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-introduction" resource="#h-introduction"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span>Introduction</span></h2><p><em>This section is non-normative.</em></p>
+      <p>
+        This specification is a <a href="#dfn-payment-transaction-message-specification" class="internalDFN" data-link-type="dfn">Payment Transaction Message Specification</a> used by the PaymentRequest API
+        [<cite><a class="bibref" href="#bib-PAYMENTREQUESTAPI">PAYMENTREQUESTAPI</a></cite>] to support payment by payment cards such as credit or debit cards. It is intended
+        to provide compatibility for merchants who currently request card details from customers to ease adoption
+        of the PaymentRequest API.
+      </p>
+      <p>
+        In the future, merchants should favor payment methods that provide a tokenized response rather than
+        clear text credit card details.
+      </p>
+    </section>
+
+    <section id="dependencies" typeof="bibo:Chapter" resource="#dependencies" property="bibo:hasPart"> 
+      <!--OddPage--><h2 id="h-dependencies" resource="#h-dependencies"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span>Dependencies</span></h2> 
+      <p> 
+      This specification relies on several other underlying specifications. 
+      </p> 
+      <dl> 
+        <dt>Payment Request Architecture</dt>
+        <dd>The terms <dfn data-dfn-type="dfn" id="dfn-payment-method">Payment Method</dfn>,
+        <dfn data-dfn-type="dfn" id="dfn-payment-app">Payment App</dfn>, and <dfn data-dfn-type="dfn" id="dfn-payment-transaction-message-specification">Payment Transaction
+        Message Specification</dfn> are defined by the Payment Request Architecture document
+        [<cite><a class="bibref" href="#bib-PAYMENTARCH">PAYMENTARCH</a></cite>].</dd>
+        <dt>Payment Request API</dt>
+        <dd>The term <dfn data-dfn-type="dfn" id="dfn-paymentrequest-constructor">PaymentRequest constructor</dfn> is defined by the PaymentRequest API
+        specification [<cite><a class="bibref" href="#bib-PAYMENTREQUESTAPI">PAYMENTREQUESTAPI</a></cite>].</dd>
+        <dt>Payment Method Identifiers</dt>
+        <dd>The term <dfn data-dfn-type="dfn" id="dfn-payment-method-identifier">Payment
+        Method Identifier</dfn> is defined by the Payment Method Identifiers specification
+        [<cite><a class="bibref" href="#bib-METHODIDENTIFIERS">METHODIDENTIFIERS</a></cite>].</dd>
+        <dt>Web IDL</dt>
+        <dd>The IDL in this specification is defined by Web IDL [<cite><a class="bibref" href="#bib-WEBIDL">WEBIDL</a></cite>].</dd>
+      </dl>
+    </section>
+
+    <section id="method-id" typeof="bibo:Chapter" resource="#method-id" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-method-id" resource="#h-method-id"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span>Payment Method Identifier</span></h2>
+      <p>The following <a href="#dfn-payment-method-identifier" class="internalDFN" data-link-type="dfn">payment method identifier</a> strings are supported by the Basic Card Payment data formats.</p>
+
+      <table>
+        <tbody><tr><th>Identifier String</th><th>Description</th></tr>
+        <tr><td>visa</td><td>Visa (Credit, Debit and Electron)</td></tr>
+        <tr><td>visa/credit</td><td>Visa Credit</td></tr>
+        <tr><td>visa/debit</td><td>Visa Debit</td></tr>
+        <tr><td>visa/electron</td><td>Visa Electron</td></tr>
+        <tr><td>mastercard</td><td>MasterCard (and EuroCard)</td></tr>
+        <tr><td>mastercard/credit</td><td>MasterCard Credit</td></tr>
+        <tr><td>mastercard/debit</td><td>MasterCard Debit</td></tr>
+        <tr><td>amex</td><td>American Express</td></tr>
+        <tr><td>discover</td><td>Discover</td></tr>
+        <tr><td>maestro</td><td>Maestro</td></tr>
+	    <tr><td>diners</td><td>Diners Club</td></tr>
+        <tr><td>jcb</td><td>JCB</td></tr>
+	    <tr><td>unionpay</td><td>UnionPay</td></tr>
+	    <tr><td>unionpay/credit</td><td>UnionPay Credit</td></tr>
+	    <tr><td>unionpay/debit</td><td>UnionPay Debit</td></tr>
+      </tbody></table>
+    </section>
+
+    <section id="init-data" typeof="bibo:Chapter" resource="#init-data" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-init-data" resource="#h-init-data"><span property="xhv:role" resource="xhv:heading"><span class="secno">4. </span>Payment Method Specific Data for the PaymentRequest constructor</span></h2>
+      <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
+      argument to the PaymentRequest constructor.</p>
+      <p>There is no payment method specific data used by the PaymentRequest constructor when processing
+      Basic Card Payment methods.</p>
+    </section>
+
+    <section id="response" typeof="bibo:Chapter" resource="#response" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-response" resource="#h-response"><span property="xhv:role" resource="xhv:heading"><span class="secno">5. </span>Payment Method Response</span></h2>
+      <p>The <dfn data-dfn-for="" data-dfn-type="dfn" id="dom-basiccardresponse" data-idl=""><code>BasicCardResponse</code></dfn> dictionary contains the response from the
+      PaymentRequest API when a user accepts payment with a Basic Payment Card payment method.</p>
+
+      <section id="basiccardresponse" typeof="bibo:Chapter" resource="#basiccardresponse" property="bibo:hasPart">
+      <h3 id="h-basiccardresponse" resource="#h-basiccardresponse"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1 </span>BasicCardResponse</span></h3>
+      <pre class="def idl"><span class="idlDictionary" id="idl-def-basiccardresponse" data-idl="" data-title="BasicCardResponse">dictionary <span class="idlDictionaryID"><a data-lt="BasicCardResponse" href="#dom-basiccardresponse" class="internalDFN" data-link-type="dfn" data-for=""><code>BasicCardResponse</code></a></span> {
+<span class="idlMember" id="idl-def-basiccardresponse-cardholdername" data-idl="" data-title="cardholderName" data-dfn-for="basiccardresponse">    required <span class="idlMemberType">DOMString</span>       <span class="idlMemberName">cardholderName</span>;</span>
+<span class="idlMember" id="idl-def-basiccardresponse-cardnumber" data-idl="" data-title="cardNumber" data-dfn-for="basiccardresponse">    required <span class="idlMemberType">DOMString</span>       <span class="idlMemberName">cardNumber</span>;</span>
+<span class="idlMember" id="idl-def-basiccardresponse-expirymonth" data-idl="" data-title="expiryMonth" data-dfn-for="basiccardresponse">    required <span class="idlMemberType">DOMString</span>       <span class="idlMemberName">expiryMonth</span>;</span>
+<span class="idlMember" id="idl-def-basiccardresponse-expiryyear" data-idl="" data-title="expiryYear" data-dfn-for="basiccardresponse">    required <span class="idlMemberType">DOMString</span>       <span class="idlMemberName">expiryYear</span>;</span>
+<span class="idlMember" id="idl-def-basiccardresponse-cardsecuritycode" data-idl="" data-title="cardSecurityCode" data-dfn-for="basiccardresponse">             <span class="idlMemberType">DOMString</span>       <span class="idlMemberName">cardSecurityCode</span>;</span>
+
+<span class="idlMember" id="idl-def-basiccardresponse-billingaddress" data-idl="" data-title="billingAddress" data-dfn-for="basiccardresponse">             <span class="idlMemberType"><a href="#dom-billingaddress" class="internalDFN" data-link-type="dfn"><code>BillingAddress</code></a>?</span> <span class="idlMemberName">billingAddress</span>;</span>
+};</span></pre>
+
+      <p>
+        The <code>BasicCardResponse</code> dictionary contains the following fields:
+      </p>
+
+      <dl>
+        <dt><dfn data-dfn-type="dfn" id="dfn-cardholdername"><code>cardholderName</code></dfn></dt>
+        <dd>The <code>cardholderName</code> field contains the cardholder's name as it appears on the card.</dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-cardnumber"><code>cardNumber</code></dfn></dt>
+        <dd>The <code>cardNumber</code> field contains the primary account number (PAN) for the payment card.</dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-expirymonth"><code>expiryMonth</code></dfn></dt>
+        <dd>The <code>expiryMonth</code> field contains a two-digit string for the expiry month
+        of the card in the range <code>01</code> to <code>12</code>.</dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-expiryyear"><code>expiryYear</code></dfn></dt>
+        <dd>The <code>expiryYear</code> field contains a two-digit string for the expiry year
+        of the card in the range <code>00</code> to <code>99</code>.</dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-cardsecuritycode"><code>cardSecurityCode</code></dfn></dt>
+        <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
+        security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
+		
+      </dl>
+
+      <div class="issue" id="issue-55"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue1"><a href="https://github.com/w3c/browser-payment-api/issues/55"><span>Issue 55</span></a><span style="text-transform: none">: Should the messages support field-level encryption?</span></div><p class="">
+There is a requirement for payment apps to be able to return data that is
+hidden from the payee themselves (perhaps for PCI scope reasons) as they will
+pass it on to their payment service processor who can then decrypt it and use
+it.
+      </p></div>
+
+      </section>
+
+      <section id="billingaddress" typeof="bibo:Chapter" resource="#billingaddress" property="bibo:hasPart">
+      <h3 id="h-billingaddress" resource="#h-billingaddress"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2 </span>BillingAddress</span></h3>
+      <pre class="def idl"><span class="idlDictionary" id="idl-def-billingaddress" data-idl="" data-title="BillingAddress">dictionary <span class="idlDictionaryID"><a data-lt="BillingAddress" href="#dom-billingaddress" class="internalDFN" data-link-type="dfn" data-for=""><code>BillingAddress</code></a></span> {
+<span class="idlSectionComment">    // [...] fields TBC - most likely the same as shipping address</span>
+};</span></pre>
+
+      <p>The <dfn data-dfn-for="" data-dfn-type="dfn" id="dom-billingaddress" data-idl=""><code>BillingAddress</code></dfn> dictionary contains the billing address
+      information associated with the payment card.</p>
+
+      <div class="issue"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue2"><span>Issue</span></div><p class="">
+        The fields of the <code>BillingAddress</code> will most likely match those in the 
+        shipping address of the PaymentRequest API once those are defined.
+      </p></div>
+
+      </section>
+    </section>
+
+    <div class="issue" id="issue-17"><div class="issue-title marker" aria-level="2" role="heading" id="h-issue3"><a href="https://github.com/w3c/browser-payment-api/issues/17"><span>Issue 17</span></a><span style="text-transform: none">: complete() should take a string argument not boolean</span></div><div class="">
+      There is an open issue about what values can be supplied to complete. These may depend on the
+      payment method selected and then Basic Card Payment values would need to be defined in this
+      document.
+    </div></div>
+
+  
+
+<section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" property="bibo:hasPart"><!--OddPage--><h2 id="h-references" resource="#h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span>References</span></h2><section id="normative-references" typeof="bibo:Chapter" resource="#normative-references" property="bibo:hasPart"><h3 id="h-normative-references" resource="#h-normative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.1 </span>Normative references</span></h3><dl class="bibliography" resource=""><dt id="bib-METHODIDENTIFIERS">[METHODIDENTIFIERS]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="method-identifiers.html" property="dc:requires"><cite>Payment Method Identifiers</cite></a>. W3C Editor's Draft. URL: <a href="method-identifiers.html" property="dc:requires">method-identifiers.html</a>
+</dd><dt id="bib-PAYMENTARCH">[PAYMENTARCH]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="architecture.html" property="dc:requires"><cite>Payment Request Architecture</cite></a>. W3C Editor's Draft. URL: <a href="architecture.html" property="dc:requires">architecture.html</a>
+</dd><dt id="bib-PAYMENTREQUESTAPI">[PAYMENTREQUESTAPI]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="paymentrequest.html" property="dc:requires"><cite>Payment Request API</cite></a>. W3C Editor's Draft. URL: <a href="paymentrequest.html" property="dc:requires">paymentrequest.html</a>
+</dd><dt id="bib-WEBIDL">[WEBIDL]</dt><dd>Cameron McCormack; Boris Zbarsky. W3C. <a href="http://www.w3.org/TR/WebIDL-1/" property="dc:requires"><cite>WebIDL Level 1</cite></a>. 8 March 2016. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/WebIDL-1/" property="dc:requires">http://www.w3.org/TR/WebIDL-1/</a>
+</dd></dl></section></section><p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to Top">↑</abbr></a></p><script async="" defer="" src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>

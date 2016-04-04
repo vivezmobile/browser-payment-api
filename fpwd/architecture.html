@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta lang="" property="dc:language" content="en">
+    <title>Payment Request API Architecture</title>
+    <meta charset="utf-8">
+    
+    
+    <style>
+    dt { margin-top: 0.5em; }
+    table { margin-top: 0.75em; border-collapse:collapse; border-style:hidden hidden none hidden }
+    table thead { border-bottom:solid }
+    table tbody th:first-child { border-left:solid }
+    table td, table th { border-left:solid; border-right:solid; border-bottom:solid thin; vertical-align:top; padding:0.2em }
+    li { margin-top: 0.5em; margin-bottom: 0.5em;}
+    </style>
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.ednote-title, div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title, div.ednote-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.ednote-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.ednote, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .ednote > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .ednote, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.ednote,  div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.ednote, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note, .ednote {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+
+li.task-list-item {
+    list-style: none;
+}
+
+input.task-list-item-checkbox {
+    margin: 0 0.35em 0.25em -1.6em;
+    vertical-align: middle;
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--><script id="initialUserConfig" type="application/json">{
+  "shortName": "payment-request-architecture",
+  "edDraftURI": "https://w3c.github.io/browser-payment-api/architecture.html",
+  "specStatus": "ED",
+  "editors": [
+    {
+      "name": "Adrian Bateman",
+      "company": "Microsoft Corporation"
+    },
+    {
+      "name": "Zach Koch",
+      "company": "Google"
+    },
+    {
+      "name": "Richard Barnes",
+      "company": "Mozilla Foundation"
+    },
+    {
+      "name": "Roy McElmurry",
+      "company": "Facebook"
+    }
+  ],
+  "license": "w3c-software-doc",
+  "wg": "Web Payments Working Group",
+  "wgURI": "https://www.w3.org/Payments/WG/",
+  "wgPublicList": "public-payments-wg",
+  "wgPatentURI": "https://www.w3.org/2004/01/pp-impl/83744/status",
+  "issueBase": "https://github.com/w3c/browser-payment-api/issues/",
+  "githubAPI": "https://api.github.com/repos/w3c/browser-payment-api",
+  "otherLinks": [
+    {
+      "key": "Version control",
+      "data": [
+        {
+          "value": "Github Repository",
+          "href": "https://github.com/w3c/browser-payment-api"
+        },
+        {
+          "value": "Issues",
+          "href": "https://github.com/w3c/browser-payment-api/issues"
+        }
+      ]
+    }
+  ],
+  "localBiblio": {
+    "PAYMENTREQUESTAPI": {
+      "title": "Payment Request API",
+      "href": "paymentrequest.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    },
+    "METHODIDENTIFIERS": {
+      "title": "Payment Method Identifiers",
+      "href": "method-identifiers.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    },
+    "BASICCARDPAYMENTS": {
+      "title": "Basic Card Payment",
+      "href": "basic-card-payment.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    }
+  }
+}</script></head>
+  <body class="h-entry toc-inline" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <p>
+            <a class="logo" href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" alt="W3C"></a>
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">Payment Request API Architecture</h1>
+  <h2 id="w3c-first-public-working-draft-19-april-2016"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2016-04-19">19 April 2016</time></h2>
+  <dl>
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2016/WD-payment-request-architecture-20160419/">http://www.w3.org/TR/2016/WD-payment-request-architecture-20160419/</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/payment-request-architecture/">http://www.w3.org/TR/payment-request-architecture/</a></dd>
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://w3c.github.io/browser-payment-api/architecture.html">https://w3c.github.io/browser-payment-api/architecture.html</a></dd>
+    <dt>Editors:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Adrian Bateman</span>, Microsoft Corporation</span>
+<span property="rdf:rest" resource="_:editor1"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor1"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Zach Koch</span>, Google</span>
+<span property="rdf:rest" resource="_:editor2"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor2"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Richard Barnes</span>, Mozilla Foundation</span>
+<span property="rdf:rest" resource="_:editor3"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor3"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Roy McElmurry</span>, Facebook</span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+          <dt>Version control:</dt>
+                  <dd>
+                    <a href="https://github.com/w3c/browser-payment-api">
+                      Github Repository
+                    </a>
+                  </dd>
+                  <dd>
+                    <a href="https://github.com/w3c/browser-payment-api/issues">
+                      Issues
+                    </a>
+                  </dd>
+  </dl>
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2016
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). 
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+            <a rel="license" href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a>
+        rules apply.
+      </p>
+  <hr title="Separator for header">
+</div>
+    <section id="abstract" class="introductory" property="dc:abstract"><h2 id="h-abstract" resource="#h-abstract"><span property="xhv:role" resource="xhv:heading">Abstract</span></h2>
+      <p>The mission of the Web Payments Working Group is to make payments easier and more secure on the Web.</p>
+  
+      <p>The group is chartered to develop multiple technologies. The current document describes a set of
+    	technologies —the Payment Request Architecture— that, together,
+    	provide merchants with a consistent way to request payment information
+    	from the user, aided by a user agent.</p>
+
+      <p>The focus of the Payment Request Architecture is to provide
+        an abstract interface between a web page and a <a href="#dfn-payment-app" class="internalDFN" data-link-type="dfn">Payment
+        App</a> to facilitate a payment transaction. This is expected
+        to streamline checkout and help reduce shopping cart
+        abandonment, as well as make it easier to use new payment methods on the Web. This document
+      	does not describe a complete architecture for end-to-end payments on the Web.
+      </p>
+
+      <p>This document does not address the full set of deliverables of the Web Payments Working Group.</p>
+    </section><section id="sotd" class="introductory"><h2 id="h-sotd" resource="#h-sotd"><span property="xhv:role" resource="xhv:heading">Status of This Document</span></h2>
+        <p>
+          <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/.</em>
+        </p>
+          
+      <p>
+        The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues">a
+        list of all bug reports that the group has not yet addressed</a>.
+        This draft highlights some of the pending issues that are still to be discussed in the working
+        group. No decision has been taken on the outcome of these issues including whether they are valid.
+        Pull requests with proposed specification text for outstanding issues are strongly encouraged.
+      </p>
+
+      <p>
+        This specification was derived from a report published
+        previously by the
+        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> and 
+	       <a href="https://github.com/w3c/webpayments/wiki/A-Payments-Initiation-Architecture-for-the-Web">A Payments Initiation Architecture for the Web</a>
+         developed within the Web Payments Working Group, and a <a href="https://www.w3.org/blog/wpwg/2016/03/04/fpwd/">blog post</a>
+         on the Working Group's work.
+      </p>
+    
+          <p>
+            This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a First Public Working Draft.
+              If you wish to make comments regarding this document, please send them to
+              <a href="mailto:public-payments-wg@w3.org">public-payments-wg@w3.org</a>
+              (<a href="mailto:public-payments-wg-request@w3.org?subject=subscribe">subscribe</a>,
+              <a href="http://lists.w3.org/Archives/Public/public-payments-wg/">archives</a>).
+            
+              All comments are welcome.
+          </p>
+            <p>
+              Publication as a First Public Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+              Membership. This is a draft document and may be updated, replaced or obsoleted by other
+              documents at any time. It is inappropriate to cite this document as other than work in
+              progress.
+            </p>
+          <p>
+              This document was produced by
+              a group
+               operating under the
+              <a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+              Policy</a>.
+              The group does not expect this document to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
+                <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
+                disclosures</a>
+              made in connection with the deliverables of
+              the group; that page also includes
+              instructions for disclosing a patent. An individual who has actual knowledge of a patent
+              which the individual believes contains
+              <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+              Claim(s)</a> must disclose the information in accordance with
+              <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+              6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          </p>
+            <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2015/Process-20150901/">1 September 2015 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+            </p>
+          
+</section><nav id="toc"><h2 class="introductory" id="table-of-contents" resource="#table-of-contents"><span property="xhv:role" resource="xhv:heading">Table of Contents</span></h2><ul class="toc" role="directory"><li class="tocline"><a href="#overview-of-anticipated-user-experience" class="tocxref"><span class="secno">1. </span>Overview of Anticipated User Experience</a></li><li class="tocline"><a href="#components" class="tocxref"><span class="secno">2. </span>Components</a><ul class="toc"><li class="tocline"><a href="#payment-apps" class="tocxref"><span class="secno">2.1 </span>Payment Apps</a></li><li class="tocline"><a href="#payment-methods" class="tocxref"><span class="secno">2.2 </span>Payment Methods</a></li><li class="tocline"><a href="#payment-mediators" class="tocxref"><span class="secno">2.3 </span>Payment Mediators</a></li></ul></li><li class="tocline"><a href="#specifications" class="tocxref"><span class="secno">3. </span>Specifications</a><ul class="toc"><li class="tocline"><a href="#payment-method-identifiers" class="tocxref"><span class="secno">3.1 </span>Payment Method Identifiers</a></li><li class="tocline"><a href="#payment-request-api" class="tocxref"><span class="secno">3.2 </span>Payment Request API</a></li><li class="tocline"><a href="#payment-method-specifications" class="tocxref"><span class="secno">3.3 </span>Payment Method Specifications</a></li><li class="tocline"><a href="#payment-app-registration-specifications" class="tocxref"><span class="secno">3.4 </span>Payment App  Registration Specifications</a></li></ul></li><li class="tocline"><a href="#glossary" class="tocxref"><span class="secno">A. </span>Glossary</a><ul class="toc"><li class="tocline"><a href="#relationship-to-previous-concepts" class="tocxref"><span class="secno">A.1 </span>Relationship to Previous Concepts</a></li></ul></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">B. </span>References</a><ul class="toc"><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">B.1 </span>Informative references</a></li></ul></li></ul></nav>
+
+    
+
+    <section id="overview-of-anticipated-user-experience" typeof="bibo:Chapter" resource="#overview-of-anticipated-user-experience" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-overview-of-anticipated-user-experience" resource="#h-overview-of-anticipated-user-experience"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span>Overview of Anticipated User Experience</span></h2>
+
+      <p>This (imperfect) overview of the anticipated user experience will help explain the architecture:</p>
+
+      <ul>
+      	<li> At the end of shopping on a merchant site, the user pushes the “buy” button.</li>
+      	<li>The merchant site calls the payment API with purchase amount, currency, accepted payment methods (e.g., Visa, Paypal, Bitcoin), and any custom data for those payment methods.</li>
+      	<li>The user agent determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
+      	<li>The user selects a payment app to pay, and carries out any app-supported activities as needed, such as authentication.</li>
+      	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the user agent to the merchant site.</li>
+      	<li>Depending on the payment method, this data will either enable the merchant to be paid, or signal that the merchant has already been paid.</li>
+      </ul>
+    </section>
+    
+    <section id="components" typeof="bibo:Chapter" resource="#components" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-components" resource="#h-components"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span>Components</span></h2>
+
+      <p>
+        The following are key components of the Payment Request Architecture. These 
+	      components would normally sit between
+        the Payment Service Providers (PSPs) of the payer and
+        payee. Different implementations of this architecture may result in components running on entirely
+        different physical systems communicating over network boundaries or, in the other extreme, the same
+        physical system assuming the role of a number of components with communication simply crossing
+        process boundaries. For some payment schemes such as Bitcoin, the components communicate directly into the
+        scheme's infrastructure.
+      </p>
+
+      <section id="payment-apps" typeof="bibo:Chapter" resource="#payment-apps" property="bibo:hasPart">
+        <h3 id="h-payment-apps" resource="#h-payment-apps"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.1 </span>Payment Apps</span></h3>
+	
+      	<p>A Payment App is software used to pay. Banks, merchants,
+      	mobile operators, and anyone else who wants to will make
+      	these available. User agents are also likely to act as basic
+      	payment apps, storing some information on behalf of the
+      	user, as they already do today with passwords. We expect
+      	payment apps will increase security and privacy by giving
+      	users more control over what they share over the
+      	  network. Payment apps will distinguish themselves through
+      	the features and services they provide beyond the standard
+      	API, such as strong user authentication, loyalty program
+      	integration, back-channel communications with the merchant
+      	for fraud analytics, and so on. </p>
+
+    	  <p>Payment apps should be able to run on desktops, mobile
+    	  devices, televisions and other devices and operating
+    	  systems. The execution environment for the Payment App is
+    	  called the "Payment App Host." The Payment App Host may be
+    	  tightly integrated with other components such as the
+    	  Payment Mediator or may be one or more separate systems
+    	  hosting individual Payment Apps or a combination of
+    	  these.</p>
+
+    	  <p>As part of facilitating payment, a Payment App may
+    	  render a user interface and/or take advantage of one or
+    	  more other IO channels for payer or third-party
+    	  interaction (e.g., payment service provider). In some
+    	  cases and where supported by a payment method, a Payment
+    	  App may be able to facilitate a payment without immediate
+    	  user interaction based on prior payer consent. (Example: A
+    	  Web of Things scenario where the payer is a machine
+    	  capable of executing payments in accordance with
+    	  predefined rules and logic).</p>
+
+      	<p>The composition of a Payment App will be platform and
+      	deployment dependent and many aspects of how the Payment App
+      	communicates with the host, interacts with the payer and
+      	payee, and communicates with third-party services will be
+      	determined by the implementer who provides the Payment App
+      	Host, as an execution environment for the app, and the
+      	Payment Mediator, that mediates all interactions between the
+      	Payment App and other components.</p>
+
+        <div class="issue" id="issue-38"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue1"><a href="https://github.com/w3c/browser-payment-api/issues/38"><span>Issue 38</span></a><span style="text-transform: none">: How are payment apps shared between different browser brands?</span></div><p class="">
+        When a user registers a new payment instrument, how is that payment
+        instrument shared between different browser brands? For example, if I
+        register a Visa debit card issued by my bank in Google Chrome on my
+        laptop, when I go to purchase something using my mobile phone, is
+        that same debit card available to me via my Firefox web browser
+        (assuming I've authenticated in some way with both browsers)?</p></div>
+      </section>
+
+      <section id="payment-methods" typeof="bibo:Chapter" resource="#payment-methods" property="bibo:hasPart">
+      	<h3 id="h-payment-methods" resource="#h-payment-methods"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.2 </span>Payment Methods</span></h3>
+
+      	<p>Each payment app will support one or more payment methods. A payment method is a system and set of rules for payments.  We are designing the API to support the broadest possible array of payment methods. When a merchant accepts a given payment method, the assumption is that the merchant will know how to process the data returned by the payment app for that payment method.</p>
+
+      	<p>Each payment method is identified by a <a href="#dfn-payment-method-identifier" class="internalDFN" data-link-type="dfn">Payment Method Identifier</a>.
+      	   The payment mediator compares payment method identifiers to determine which
+      	  payment methods to offer the user. Payment Method Identifiers will support distributed extensibility, meaning that there does
+              not need to be a central machine-readable registry to discover or register <a href="#dfn-payment-method" class="internalDFN" data-link-type="dfn">payment methods</a>.</p>
+
+      	<p>The information required to use a Payment Method is called Payment Method Data. For a given payment method within a payment app, a user may have multiple instances of payment method data. Examples: a personal credit card (PAN, expiration data, CVV) and a business credit card, or multiple Bitcoin accounts.</p>
+      </section>
+
+      <section id="payment-mediators" typeof="bibo:Chapter" resource="#payment-mediators" property="bibo:hasPart">
+      	<h3 id="h-payment-mediators" resource="#h-payment-mediators"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.3 </span>Payment Mediators</span></h3>
+
+
+      	<p>The Payment Mediator fulfills a number of roles:</p>
+      	<ul>
+      	  <li>It helps determine which payer Payment Apps can be used to fulfill the payment request given the payee's accepted payment methods.</li>
+      	  <li> It helps the payer choose one (typically with explicit interaction or prior consent).</li>
+      	  <li> It passes payment request data to the payer's selected Payment App.</li>
+      	</ul>
+
+      	<p>We expect that user agents will primarily act as payment mediators in this architecture.</p>
+      </section>
+    </section>
+
+    <section id="specifications" typeof="bibo:Chapter" resource="#specifications" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-specifications" resource="#h-specifications"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span>Specifications</span></h2>
+
+      <p>The Payment Request Architecture organizes the above concepts into several component specifications
+	      so that they can be discussed and moved forward independently. The
+        <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification is the only
+        common dependency. The following diagram shows the references between different specifications that describe
+        the Payment Request Architecture. The arrows show normative references pointing from the referring
+        document to the referenced document.
+      </p>
+      <figure id="fig-relationship-among-different-specifications-in-the-payment-request-system">
+        <img src="arch.svg" width="700" height="465">
+        <figcaption>Fig. <span class="figno">1</span> <span class="fig-title">Relationship among different specifications in the Payment Request system</span></figcaption>
+      </figure>
+
+      <section id="payment-method-identifiers" typeof="bibo:Chapter" resource="#payment-method-identifiers" property="bibo:hasPart">
+        <h3 id="h-payment-method-identifiers" resource="#h-payment-method-identifiers"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.1 </span>Payment Method Identifiers</span></h3>
+        <p>The Payment Method Identifiers [<cite><a class="bibref" href="#bib-METHODIDENTIFIERS">METHODIDENTIFIERS</a></cite>] specification defines the format of
+          Payment Method Identifiers. </p>
+
+	      <div class="issue" id="issue-10"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue2"><a href="https://github.com/w3c/browser-payment-api/issues/10"><span>Issue 10</span></a><span style="text-transform: none">: Should well-known identifiers be used for ubiquitous payment methods</span></div><div class="">
+        If we choose to support well-known short strings for payment methods then we will need to
+        determine where to define them. We may choose to define these well-known strings in a
+        formal specification.
+        </div></div>
+
+      </section>
+
+      <section id="payment-request-api" typeof="bibo:Chapter" resource="#payment-request-api" property="bibo:hasPart">
+        <h3 id="h-payment-request-api" resource="#h-payment-request-api"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.2 </span>Payment Request API</span></h3>
+        <p>
+        The Payment Request API [<cite><a class="bibref" href="#bib-PAYMENTREQUESTAPI">PAYMENTREQUESTAPI</a></cite>] specification defines the API that makes a
+        user agent the conduit for messages exchanged between web pages (or applications) and <a href="#dfn-payment-app" class="internalDFN" data-link-type="dfn">payment apps</a>.
+        The web page supplies a list of payment methods accepted by the merchant. The Payment Mediator
+        matches those against payment methods supported by the user’s registered Payment Apps.
+        </p>
+        <p>
+        One principle of the Payment Request system is that when a merchant web site declares
+        that it accepts a given payment method then it must know how to process the resulting
+	      response.
+        </p>
+      </section>
+
+      <section id="payment-method-specifications" typeof="bibo:Chapter" resource="#payment-method-specifications" property="bibo:hasPart">
+        <h3 id="h-payment-method-specifications" resource="#h-payment-method-specifications"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.3 </span>Payment Method Specifications</span></h3>
+        <p>
+        The Payment Request API specification has no intrinsic knowledge of the payment
+        methods available. When a transaction is enacted by the user through the API a JSON object
+        containing the relevant information necessary to process the transaction is returned. The
+        format of this "message" is defined specifically for the <a href="#dfn-payment-method" class="internalDFN" data-link-type="dfn">payment method</a> and might be private
+        to that method.</p>
+
+	      <p>We expect some message definitions to be shared amongst different
+        <a href="#dfn-payment-app" class="internalDFN" data-link-type="dfn">payment apps</a>. One example is the [<cite><a class="bibref" href="#bib-BASICCARDPAYMENTS">BASICCARDPAYMENTS</a></cite>], which defines a payment
+	      method identifier, method-specific request data, and method-specific response data
+	      for a basic card payment method. We expect this specification to be a model for other
+	      payment method specifications.</p>
+      </section>
+
+      <section id="payment-app-registration-specifications" typeof="bibo:Chapter" resource="#payment-app-registration-specifications" property="bibo:hasPart">
+        <h3 id="h-payment-app-registration-specifications" resource="#h-payment-app-registration-specifications"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.4 </span>Payment App  Registration Specifications</span></h3>
+        <div class="issue" id="issue-8"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue3"><a href="https://github.com/w3c/browser-payment-api/issues/8"><span>Issue 8</span></a><span style="text-transform: none">: Payment app installation is platform-dependent</span></div><div class="">
+          There is an open question within the working group about what registration scenarios
+          should be supported by specifications from the group. See the <a href="https://github.com/WICG/paymentrequest/blob/gh-pages/docs/registration.md">Payment App Registration</a> explainer and <a href="https://github.com/w3c/webpayments/wiki/RegistrationTypes">registration scenarios</a>.
+        </div></div>
+      </section>
+
+    </section>
+
+    <section class="appendix" id="glossary" typeof="bibo:Chapter" resource="#glossary" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-glossary" resource="#h-glossary"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span>Glossary</span></h2>
+
+      <div class="issue" id="issue-43"><div class="issue-title marker" aria-level="3" role="heading" id="h-issue4"><a href="https://github.com/w3c/browser-payment-api/issues/43"><span>Issue 43</span></a><span style="text-transform: none">: Terminology across all Web Payments documents should be aligned</span></div><div class="">  
+        It has been suggested that all Web Payments specifications should use  
+        common terminology. There is a Web Payments Interest Group glossary that  
+        contains common terminology that could be integrated into this  
+        specification and automatically kept in sync via ReSpec's dynamic  
+        terminology import feature.  
+      </div></div>  
+
+      <dl>
+        <dt><dfn data-dfn-type="dfn" id="dfn-payment-method">Payment Method</dfn></dt>
+        <dd>A way of paying. A system and set of rules for payments. A payment app may support one or
+        more payment methods. Examples: cleartext-visa, tokenized-mastercard, bobspay.com (a fictitious payment service).
+        </dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-payment-method-identifier">Payment Method Identifier</dfn></dt>
+        <dd>A way to identify a payment method. The payment mediator compares payment method identifiers to determine which
+	      payment methods to offer the user.
+        </dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-payment-app">Payment App</dfn></dt>
+        <dd>
+        A piece of software that enables a payer to make payments. A payment app may support one or more
+        <a href="#dfn-payment-method" class="internalDFN" data-link-type="dfn">payment methods</a>.
+        </dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-payment-mediator">Payment Mediator</dfn></dt>
+        <dd>
+          Software that matches payee-accepted payment methods and user-registered payment methods, and
+	        offers a choice to the user for selection.
+        </dd>
+        <dt><dfn data-dfn-type="dfn" id="dfn-payment-method-data">Payment Method Data</dfn></dt>
+        <dd>
+        The data describing an instance of a payment method. For example, for the cleartext-visa payment
+        method this might be the card primary account number (PAN), expiry date, and CVV.
+        </dd>
+      </dl>
+
+      <section id="relationship-to-previous-concepts" typeof="bibo:Chapter" resource="#relationship-to-previous-concepts" property="bibo:hasPart">
+        <h3 id="h-relationship-to-previous-concepts" resource="#h-relationship-to-previous-concepts"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.1 </span>Relationship to Previous Concepts</span></h3>
+
+        <p>This architecture uses concepts like "payment app" because the Working Group has found it challenging to adopt the "digital wallet" metaphor for several reasons:</p>
+
+        <ul>
+        	<li>
+        	  In the physical world it is not practical for users to have multiple wallets. On the Web this is
+            possible and for there to be copies of the same payment method data in more than one wallet.</li>
+        	<li> In the physical world the process of deciding how to pay is not done by the wallet, it is done by
+           the user. On the Web the process of selection can be facilitated by digital algorithms that are capable
+            of processing complex data and relationships to assist the user in deciding how to pay.</li>
+      	  <li>
+      	    In the physical world a user selects a payment method data directly because this what is held in their
+            wallet. On the Web the user is more likely to pick some abstraction of their payment method data that
+            may itself represent multiple payment method instances.</li>
+        </ul>
+
+        <p>There is not a one-to-one mapping from the previous concepts to the current ones, as the modeling is fundamentally different. Here is how previous and current concepts relate:</p>
+
+      	<table>
+      	  <tbody><tr>
+      	    <th>Current</th>
+      	    <th>Previous</th>
+      	    <th>Short definition</th>
+      	  </tr>
+      	  <tr>
+      	    <td>Payment App</td>
+      	    <td>Digital Wallet, Payment Instrument </td>
+      	    <td>An application, registered by the payer, that supports processing payment 
+      	    requests and returning payment responses for one or more payment methods.</td>
+      	  </tr>
+      	  <tr>
+      	    <td>Payment Method</td>
+      	    <td>Payment Scheme</td>
+      	    <td>A system and set of rules for payments.</td>
+      	  </tr>
+      	  <tr>
+      	    <td>Payment Mediator</td>
+      	    <td>Digital Wallet, Payment Instrument</td>
+      	    <td>A piece of software that coordinates messages between sellers and Payment apps.</td>
+      	  </tr>
+      	</tbody></table>
+      </section>
+
+    </section>
+
+  
+
+<section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" property="bibo:hasPart"><!--OddPage--><h2 id="h-references" resource="#h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">B. </span>References</span></h2><section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart"><h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">B.1 </span>Informative references</span></h3><dl class="bibliography" resource=""><dt id="bib-BASICCARDPAYMENTS">[BASICCARDPAYMENTS]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="basic-card-payment.html" property="dc:references"><cite>Basic Card Payment</cite></a>. W3C Editor's Draft. URL: <a href="basic-card-payment.html" property="dc:references">basic-card-payment.html</a>
+</dd><dt id="bib-METHODIDENTIFIERS">[METHODIDENTIFIERS]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="method-identifiers.html" property="dc:references"><cite>Payment Method Identifiers</cite></a>. W3C Editor's Draft. URL: <a href="method-identifiers.html" property="dc:references">method-identifiers.html</a>
+</dd><dt id="bib-PAYMENTREQUESTAPI">[PAYMENTREQUESTAPI]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="paymentrequest.html" property="dc:references"><cite>Payment Request API</cite></a>. W3C Editor's Draft. URL: <a href="paymentrequest.html" property="dc:references">paymentrequest.html</a>
+</dd></dl></section></section><p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to Top">↑</abbr></a></p><script async="" defer="" src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>

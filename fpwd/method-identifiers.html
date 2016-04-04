@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta lang="" property="dc:language" content="en">
+    <title>Payment Method Identifiers</title>
+    <meta charset="utf-8">
+    
+    
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.ednote-title, div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title, div.ednote-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.ednote-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.ednote, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .ednote > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .ednote, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.ednote,  div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.ednote, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note, .ednote {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+
+li.task-list-item {
+    list-style: none;
+}
+
+input.task-list-item-checkbox {
+    margin: 0 0.35em 0.25em -1.6em;
+    vertical-align: middle;
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--><script id="initialUserConfig" type="application/json">{
+  "shortName": "payment-method-id",
+  "edDraftURI": "https://w3c.github.io/browser-payment-api/method-identifiers.html",
+  "specStatus": "ED",
+  "editors": [
+    {
+      "name": "Adrian Bateman",
+      "company": "Microsoft Corporation"
+    },
+    {
+      "name": "Zach Koch",
+      "company": "Google"
+    },
+    {
+      "name": "Richard Barnes",
+      "company": "Mozilla Foundation"
+    },
+    {
+      "name": "Roy McElmurry",
+      "company": "Facebook"
+    }
+  ],
+  "useExperimentalStyles": true,
+  "license": "w3c-software-doc",
+  "wg": "Web Payments Working Group",
+  "wgURI": "https://www.w3.org/Payments/WG/",
+  "wgPublicList": "public-payments-wg",
+  "wgPatentURI": "https://www.w3.org/2004/01/pp-impl/83744/status",
+  "issueBase": "https://github.com/w3c/browser-payment-api/issues/",
+  "localBiblio": {
+    "PAYMENTREQUESTAPI": {
+      "title": "Payment Request API",
+      "href": "paymentrequest.html",
+      "authors": [
+        "Adrian Bateman",
+        "Zach Koch",
+        "Richard Barnes"
+      ],
+      "status": "ED"
+    },
+    "REVERSEDOMAINS": {
+      "title": "Reverse Domain Name Notation",
+      "href": "https://en.wikipedia.org/wiki/Reverse_domain_name_notation"
+    }
+  }
+}</script></head>
+  <body class="h-entry toc-inline" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <p>
+            <a class="logo" href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" alt="W3C"></a>
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">Payment Method Identifiers</h1>
+  <h2 id="w3c-first-public-working-draft-19-april-2016"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2016-04-19">19 April 2016</time></h2>
+  <dl>
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2016/WD-payment-method-id-20160419/">http://www.w3.org/TR/2016/WD-payment-method-id-20160419/</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/payment-method-id/">http://www.w3.org/TR/payment-method-id/</a></dd>
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://w3c.github.io/browser-payment-api/method-identifiers.html">https://w3c.github.io/browser-payment-api/method-identifiers.html</a></dd>
+    <dt>Editors:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Adrian Bateman</span>, Microsoft Corporation</span>
+<span property="rdf:rest" resource="_:editor1"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor1"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Zach Koch</span>, Google</span>
+<span property="rdf:rest" resource="_:editor2"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor2"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Richard Barnes</span>, Mozilla Foundation</span>
+<span property="rdf:rest" resource="_:editor3"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor3"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Roy McElmurry</span>, Facebook</span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+  </dl>
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2016
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). 
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+            <a rel="license" href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a>
+        rules apply.
+      </p>
+  <hr title="Separator for header">
+</div>
+    <section id="abstract" class="introductory" property="dc:abstract"><h2 id="h-abstract" resource="#h-abstract"><span property="xhv:role" resource="xhv:heading">Abstract</span></h2>
+      <p>
+        The Payment Request API [<cite><a class="bibref" href="#bib-PAYMENTREQUESTAPI">PAYMENTREQUESTAPI</a></cite>] requires that merchants supply a list
+        identifiers for supported payment methods. This document defines those identifier
+        strings and how they are created.
+      </p>
+    </section><section id="sotd" class="introductory"><h2 id="h-sotd" resource="#h-sotd"><span property="xhv:role" resource="xhv:heading">Status of This Document</span></h2>
+        <p>
+          <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/.</em>
+        </p>
+          
+      <p>
+        The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues">a
+        list of all bug reports that the group has not yet addressed</a>.
+        This draft highlights some of the pending issues that are still to be discussed in the working
+        group. No decision has been taken on the outcome of these issues including whether they are valid.
+        Pull requests with proposed specification text for outstanding issues are strongly encouraged.
+      </p>
+      <p>
+        This specification was derived from a report published previously by the
+        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
+      </p>
+    
+          <p>
+            This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a First Public Working Draft.
+              This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
+              If you wish to make comments regarding this document, please send them to
+              <a href="mailto:public-payments-wg@w3.org">public-payments-wg@w3.org</a>
+              (<a href="mailto:public-payments-wg-request@w3.org?subject=subscribe">subscribe</a>,
+              <a href="http://lists.w3.org/Archives/Public/public-payments-wg/">archives</a>).
+            
+              All comments are welcome.
+          </p>
+            <p>
+              Publication as a First Public Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+              Membership. This is a draft document and may be updated, replaced or obsoleted by other
+              documents at any time. It is inappropriate to cite this document as other than work in
+              progress.
+            </p>
+          <p>
+              This document was produced by
+              a group
+               operating under the
+              <a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+              Policy</a>.
+                <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
+                disclosures</a>
+              made in connection with the deliverables of
+              the group; that page also includes
+              instructions for disclosing a patent. An individual who has actual knowledge of a patent
+              which the individual believes contains
+              <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+              Claim(s)</a> must disclose the information in accordance with
+              <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+              6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          </p>
+            <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2015/Process-20150901/">1 September 2015 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+            </p>
+          
+</section><nav id="toc"><h2 class="introductory" id="table-of-contents" resource="#table-of-contents"><span property="xhv:role" resource="xhv:heading">Table of Contents</span></h2><ul class="toc" role="directory"><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">1. </span>Introduction</a></li><li class="tocline"><a href="#requirements-for-identifiers" class="tocxref"><span class="secno">2. </span>Requirements for identifiers</a></li><li class="tocline"><a href="#payment-method-identifier" class="tocxref"><span class="secno">3. </span>Payment Method Identifier</a></li><li class="tocline"><a href="#option-1a" class="tocxref"><span class="secno">4. </span>Option 1a</a><ul class="toc"><li class="tocline"><a href="#identifier-format" class="tocxref"><span class="secno">4.1 </span>Identifier format</a><ul class="toc"><li class="tocline"><a href="#base-url" class="tocxref"><span class="secno">4.1.1 </span>Base URL</a></li></ul></li><li class="tocline"><a href="#short-identifiers" class="tocxref"><span class="secno">4.2 </span>Short identifiers</a></li><li class="tocline"><a href="#identifier-equivalence" class="tocxref"><span class="secno">4.3 </span>Identifier equivalence</a></li><li class="tocline"><a href="#dependencies" class="tocxref"><span class="secno">4.4 </span>Dependencies</a></li><li class="tocline"><a href="#discussion-topics" class="tocxref"><span class="secno">4.5 </span>Discussion topics</a></li></ul></li><li class="tocline"><a href="#option-1b" class="tocxref"><span class="secno">5. </span>Option 1b</a><ul class="toc"><li class="tocline"><a href="#identifier-format-1" class="tocxref"><span class="secno">5.1 </span>Identifier format</a></li><li class="tocline"><a href="#short-identifier-registry" class="tocxref"><span class="secno">5.2 </span>Short Identifier Registry</a></li><li class="tocline"><a href="#content-at-payment-method-identifier-urls" class="tocxref"><span class="secno">5.3 </span>Content at Payment Method Identifier URLs</a></li><li class="tocline"><a href="#identifier-equivalence-1" class="tocxref"><span class="secno">5.4 </span>Identifier Equivalence</a></li><li class="tocline"><a href="#dependencies-1" class="tocxref"><span class="secno">5.5 </span>Dependencies</a></li><li class="tocline"><a href="#discussion-topics-1" class="tocxref"><span class="secno">5.6 </span>Discussion topics</a></li></ul></li><li class="tocline"><a href="#option-2" class="tocxref"><span class="secno">6. </span>Option 2</a><ul class="toc"><li class="tocline"><a href="#identifier-format-2" class="tocxref"><span class="secno">6.1 </span>Identifier format</a></li><li class="tocline"><a href="#short-identifiers-1" class="tocxref"><span class="secno">6.2 </span>Short identifiers</a></li><li class="tocline"><a href="#identifier-equivalence-2" class="tocxref"><span class="secno">6.3 </span>Identifier equivalence</a></li><li class="tocline"><a href="#dependencies-2" class="tocxref"><span class="secno">6.4 </span>Dependencies</a></li><li class="tocline"><a href="#discussion-topics-2" class="tocxref"><span class="secno">6.5 </span>Discussion topics</a></li></ul></li><li class="tocline"><a href="#issues" class="tocxref"><span class="secno">A. </span>Issues</a></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">B. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">B.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">B.2 </span>Informative references</a></li></ul></li></ul></nav>
+
+    
+    
+    <section class="informative" id="introduction" typeof="bibo:Chapter" resource="#introduction" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-introduction" resource="#h-introduction"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span>Introduction</span></h2><p><em>This section is non-normative.</em></p>
+        <p>
+          One of the principles of the PaymentRequest API is that merchants must know how to accept payments from the payment methods that they claim to support.
+          This allows the API to abstract away the details of specific payment methods and to add new ones over time without changing the API specification.
+        </p>
+        <p>
+          As part of the paymentRequest() call, the web page provides an array of strings that identify the supported payment methods. This document defines those strings.
+        </p>
+    </section>
+
+    <section class="informative" id="requirements-for-identifiers" typeof="bibo:Chapter" resource="#requirements-for-identifiers" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-requirements-for-identifiers" resource="#h-requirements-for-identifiers"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span>Requirements for identifiers</span></h2><p><em>This section is non-normative.</em></p>
+      <p>There are a set of requirements that the payment method identifiers are designed to support:</p>
+      <ol>
+        <li id="req1">It must be possible for the Working Group to mint a payment method identifier for any payment method.</li>
+        <li id="req2">It must be possible for the anyone to mint a payment method identifier for a payment method under their control.</li>
+        <li id="req3">It should be possible to use a standard short string to identify common payment methods.</li>
+        <li id="req4">It must be possible for someone minting a non-standard identifier to make it globally unique in a cost-effective manner.</li>
+      </ol>
+    </section>
+
+    <section id="payment-method-identifier" typeof="bibo:Chapter" resource="#payment-method-identifier" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-payment-method-identifier" resource="#h-payment-method-identifier"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span>Payment Method Identifier</span></h2>
+      <p>
+        The <dfn data-dfn-type="dfn" id="dfn-payment-method-identifier">Payment Method Identifier</dfn> is a string that uniquely identifies a payment method that a user can use to complete a transaction. For example, Visa, MasterCard, and American Express are payment methods used in some countries.
+      </p>
+    </section>    
+
+    <div class="note"><div class="note-title marker" aria-level="2" role="heading" id="h-note1"><span>Note</span></div><div class="">This document currently specifies multiple alternate options for payment method identifiers. The Working Group has
+    not yet selected an approach, which might be one documented in this specification or another as yet undocumented proposal.</div></div> 
+
+    <section id="option-1a" typeof="bibo:Chapter" resource="#option-1a" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-option-1a" resource="#h-option-1a"><span property="xhv:role" resource="xhv:heading"><span class="secno">4. </span>Option 1a</span></h2>
+      <p>This section describes an approach to payment method identifiers using URLs.</p>
+
+      <section id="identifier-format" typeof="bibo:Chapter" resource="#identifier-format" property="bibo:hasPart">
+        <h3 id="h-identifier-format" resource="#h-identifier-format"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.1 </span>Identifier format</span></h3>
+        <p>Payment method identifiers are strings containing a <a href="#dfn-url" class="internalDFN" data-link-type="dfn">URL</a>. The string can be either an <a href="#dfn-absolute-url" class="internalDFN" data-link-type="dfn">absolute URL</a>
+        or a <a href="#dfn-relative-url" class="internalDFN" data-link-type="dfn">relative URL</a>.</p>
+
+        <section id="base-url" typeof="bibo:Chapter" resource="#base-url" property="bibo:hasPart">
+          <h4 id="h-base-url" resource="#h-base-url"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.1.1 </span>Base URL</span></h4>
+          <p>If the string is a <a href="#dfn-relative-url" class="internalDFN" data-link-type="dfn">relative URL</a> then the <a href="#dfn-base-url" class="internalDFN" data-link-type="dfn">base URL</a> used by the <a href="#dfn-url-parser" class="internalDFN" data-link-type="dfn">URL parser</a> is <em>https://www.example.com/to-be-determined/</em>.</p>
+          <div class="ednote"><div class="ednote-title marker" aria-level="5" role="heading" id="h-ednote1"><span>Editor's Note</span></div><p class="">
+            The base URL needs to be determined and specified here. The base URL should be from a domain that the Working Group controls.
+          </p></div>
+        </section>
+      </section>
+      <section id="short-identifiers" typeof="bibo:Chapter" resource="#short-identifiers" property="bibo:hasPart">
+        <h3 id="h-short-identifiers" resource="#h-short-identifiers"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.2 </span>Short identifiers</span></h3>
+        <p>Since payment method identifiers can be relative URLs, simple short strings can be used as identifiers
+        and they will be parsed using the base URL.</p>
+        <p>For example, the string <code>visa</code> would be parsed into the URL
+        <code>https://www.example.com/to-be-determined/visa</code>.</p>
+      </section>
+      <section id="identifier-equivalence" typeof="bibo:Chapter" resource="#identifier-equivalence" property="bibo:hasPart">
+        <h3 id="h-identifier-equivalence" resource="#h-identifier-equivalence"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.3 </span>Identifier equivalence</span></h3>
+        <p>When the PaymentRequest API is invoked, the web page provides a list of identifiers for supported payment methods.
+        The user agent must compare these identifiers to those available to the user and use this to filter what the user
+        can select. To determine whether two identifiers match, perform the following test:</p>
+        <ul>
+          <li>Let <em>A</em> be the first payment method identifier string and let <em>B</em> be the second payment method
+          identifier string.</li>
+          <li>Let <em>urlA</em> be the result from the <a href="#dfn-url-parser" class="internalDFN" data-link-type="dfn">URL parser</a> when parsing <em>A</em> using the
+          <a href="#dfn-base-url" class="internalDFN" data-link-type="dfn">base URL</a> specified above.</li>
+          <li>Let <em>urlB</em> be the result from the <a href="#dfn-url-parser" class="internalDFN" data-link-type="dfn">URL parser</a> when parsing <em>B</em> using the
+          <a href="#dfn-base-url" class="internalDFN" data-link-type="dfn">base URL</a> specified above.</li>
+          <li>The identifiers match if <em>urlA</em> <strong>equals</strong> <em>urlB</em> using the
+          <a href="#dfn-url-equivalence" class="internalDFN" data-link-type="dfn">URL equivalence</a> test (i.e. the test returns true).</li>
+        </ul>
+      </section>
+      <section id="dependencies" typeof="bibo:Chapter" resource="#dependencies" property="bibo:hasPart">
+        <h3 id="h-dependencies" resource="#h-dependencies"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.4 </span>Dependencies</span></h3>
+        <p>This section relies on several other underlying specifications.</p>
+        <dl>
+          <dt>URL</dt>
+          <dd>The terms <dfn data-dfn-type="dfn" id="dfn-url">URL</dfn>, <dfn data-dfn-type="dfn" id="dfn-absolute-url">absolute URL</dfn>, <dfn data-dfn-type="dfn" id="dfn-base-url">base URL</dfn>, <dfn data-dfn-type="dfn" id="dfn-relative-url">relative URL</dfn>, <dfn data-dfn-type="dfn" id="dfn-url-parser">URL parser</dfn>, and <dfn data-dfn-type="dfn" id="dfn-url-equivalence">URL equivalence</dfn> are defined by [<cite><a class="bibref" href="#bib-url-1-20141209">url-1-20141209</a></cite>] <small><em>(or the editor's draft)</em></small>.</dd>
+        </dl>
+      </section>
+      <section class="informative" id="discussion-topics" typeof="bibo:Chapter" resource="#discussion-topics" property="bibo:hasPart">
+        <h3 id="h-discussion-topics" resource="#h-discussion-topics"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.5 </span>Discussion topics</span></h3><p><em>This section is non-normative.</em></p>
+        <p>The following observations are made about this option:</p>
+        <ul>
+          <li>
+            This option satisfies <a href="#req1">requirement 1</a> because the Working Group can specify
+            identifiers leading to URLs from domains that the Working Group controls.
+          </li>
+          <li>
+            This option satisfies <a href="#req2">requirement 2</a> because anybody can specify
+            identifiers leading to URLs from domains that they control.
+          </li>
+          <li>
+            This option satisfies <a href="#req3">requirement 3</a> because the Working Group can specify
+            common payment method identifiers as short string relative URLs. Since the Working Group
+            is defining them, they can be relative to the Working Group defined base URL.
+          </li>
+          <li>
+            This option satisfies <a href="#req4">requirement 4</a> because it is within your control to
+            create URLs from domains that you control that are globally unique.
+          </li>
+          <li>
+            Advantages:
+            <ul>
+              <li>URLs are familiar and easily understood.</li>
+              <li>URLs can easily be created in a distributed fashion.</li>
+              <li><p>The parsed URL could be used as part of a discoverable registration mechanism. For example,
+                a manifest resource could be located at the URL: a user agent could download the manifest whenever
+                a merchant supports a method that the user agent doesn't recognised.</p>
+              <p>However, registration is a
+              comparatively rare operation compared to making a payment. If a user agent downloads manifests
+              every time a site calls the API this could result in a tremendous amount of traffic.</p><p>For example,
+              if bobspay.com has a manifest file then lots of merchants might support this payment method. If there
+              exist lots of users who never want to install the bobspay.com payment app but who visit sites that accept
+              bobspay.com then there is going to be lots of traffic generated for the bobspay.com manifest.</p></li>
+            </ul>
+          </li>
+          <li>
+            Disadvantages:
+            <ul>
+              <li>URLs are difficult to remember and developers often need to find a reference to copy and paste them from.</li>
+              <li>Developers may find it confusing to us a URL if it isn't intended to point to a resource.</li>
+              <li>Overloading the same string to mean an identifier in some cases and a resource location in others is undesirable. The intent of a URL is to load or locate a resource and may only be done sometimes with this proposal. A URL might mistakenly be crafted
+              as an identifier but later lead to attempts to load it that weren't anticipated (by potentially large numbers of users).</li>
+              <li>Experience with XML namespaces suggests that optional downloading resources from identifiers tends to encourage
+              user agents to hard code common identifiers for performance reasons potentially leading to a closed or unbalanced
+              system.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="issue" id="issue-46"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue1"><a href="https://github.com/w3c/browser-payment-api/issues/46"><span>Issue 46</span></a><span style="text-transform: none">: Should a payment app identifier (URL) or a payment method identifier (URL) resolve to a machine readable resource that describes it?</span></div><div class="">
+          <p>There is an open issue about whether payment method identifiers should resolve to a resource if they are URLs.</p>
+        </div></div>
+      </section>
+    </section>
+
+    <section id="option-1b" typeof="bibo:Chapter" resource="#option-1b" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-option-1b" resource="#h-option-1b"><span property="xhv:role" resource="xhv:heading"><span class="secno">5. </span>Option 1b</span></h2>
+      <p>
+        This section describes a way of expressing payment method identifiers
+        using machine-readable URLs that may be aliased to
+        developer-friendly short identifiers.
+      </p>
+
+      <section id="identifier-format-1" typeof="bibo:Chapter" resource="#identifier-format-1" property="bibo:hasPart">
+        <h3 id="h-identifier-format-1" resource="#h-identifier-format-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1 </span>Identifier format</span></h3>
+        <p>
+          Payment method identifiers are
+          <a data-lt="absolute URL" href="#dfn-absolute-url" class="internalDFN" data-link-type="dfn">absolute URLs</a> that may optionally be
+          aliased using short identifiers. For example,
+          <code>https://visa.com/payment-methods/VisaDebit</code> (URL) or
+          <code>VisaDebit</code> (short identifier).
+        </p>
+      </section>
+
+      <section id="short-identifier-registry" typeof="bibo:Chapter" resource="#short-identifier-registry" property="bibo:hasPart">
+        <h3 id="h-short-identifier-registry" resource="#h-short-identifier-registry"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2 </span>Short Identifier Registry</span></h3>
+        <p>
+          A mapping file establishing short identifiers to payment method
+          identifier URLs can be found at
+          <code>https://w3.org/registries/web-payments/v1</code>.
+          To reduce the load on fetching this file, it is encouraged that
+          applications hard code the mappings.
+        </p>
+        <div class="issue"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue2"><span>Issue</span></div><p class="">
+          Any short identifier registry that is not re-parsed every time
+          will require a message version identifier to be embedded in the
+          messages that use the short identifiers. The assumption here is
+          that there is some versioning mechanism that is used by payment
+          messages such that the payment apps and merchants know how to
+          process short identifiers.
+        </p></div>
+        <div class="issue"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue3"><span>Issue</span></div><p class="">
+          The format of the document located at the short identifier registry
+          URL above still needs to be determined. Options include a plain
+          JSON document or a JSON-LD document. The mappings would be as simple
+          as: <code>"VisaDebit": "https://visa.com/payment-methods/VisaDebit"</code>.
+        </p></div>
+        <div class="issue"><div class="issue-title marker" aria-level="4" role="heading" id="h-issue4"><span>Issue</span></div><p class="">
+          It is assumed that once the short identifier registry file is created,
+          it is never updated. The Working Group may periodically release
+          <code>v2</code>, <code>v3</code>, etc. registry files.
+        </p></div>
+      </section>
+
+      <section id="content-at-payment-method-identifier-urls" typeof="bibo:Chapter" resource="#content-at-payment-method-identifier-urls" property="bibo:hasPart">
+        <h3 id="h-content-at-payment-method-identifier-urls" resource="#h-content-at-payment-method-identifier-urls"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3 </span>Content at Payment Method Identifier URLs</span></h3>
+        <p>
+          Payment method identifier URLs that resolve to content:
+        </p>
+        <ol>
+          <li><em class="rfc2119" title="MUST">MUST</em> be served over HTTPS,</li>
+          <li><em class="rfc2119" title="SHOULD">SHOULD</em> support HTTP Content Negotiation,</li>
+          <li><em class="rfc2119" title="SHOULD">SHOULD</em> provide a human-readable document that describes the
+          payment method when <code>text/html</code> is requested, and</li>
+          <li><em class="rfc2119" title="SHOULD">SHOULD</em> provide a machine-readable document that describes the
+          payment method when <code>application/ld+json</code> is requested.
+          </li>
+        </ol>
+      </section>
+
+      <section id="identifier-equivalence-1" typeof="bibo:Chapter" resource="#identifier-equivalence-1" property="bibo:hasPart">
+        <h3 id="h-identifier-equivalence-1" resource="#h-identifier-equivalence-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4 </span>Identifier Equivalence</span></h3>
+        <p>When the PaymentRequest API is invoked, the web page provides a
+        list of identifiers for supported payment methods. The user agent
+        must compare these identifiers to those available to the user and
+        use this to filter what the user can select. To determine whether
+        two identifiers match, perform the following test:</p>
+        <ul>
+          <li>Let <em>A</em> be the first payment method identifier and
+          let <em>B</em> be the second payment method identifier.</li>
+          <li>If <em>A</em> or <em>B</em> is listed in the Short Identifier
+          Registry, replace the value with its corresponding
+          <a href="#dfn-absolute-url" class="internalDFN" data-link-type="dfn">absolute URL</a>.</li>
+          <li>Let <em>urlA</em> be the result from the <a href="#dfn-url-parser" class="internalDFN" data-link-type="dfn">URL parser</a>
+          when parsing <em>A</em>.</li>
+          <li>Let <em>urlB</em> be the result from the <a href="#dfn-url-parser" class="internalDFN" data-link-type="dfn">URL parser</a> when
+          parsing <em>B</em>.</li>
+          <li>The identifiers match if <em>urlA</em> <strong>equals</strong>
+          <em>urlB</em> using the <a href="#dfn-url-equivalence" class="internalDFN" data-link-type="dfn">URL equivalence</a> test
+          (i.e. the test returns true).</li>
+        </ul>
+      </section>
+      <section id="dependencies-1" typeof="bibo:Chapter" resource="#dependencies-1" property="bibo:hasPart">
+        <h3 id="h-dependencies-1" resource="#h-dependencies-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5 </span>Dependencies</span></h3>
+        <p>This section relies on several other underlying specifications.</p>
+        <dl>
+          <dt>URL</dt>
+          <dd>The terms <em>URL</em>, <em>absolute URL</em>, <em>URL parser</em>, and <em>URL equivalence</em> are defined by [<cite><a class="bibref" href="#bib-url-1-20141209">url-1-20141209</a></cite>] <small><em>(or the editor's draft)</em></small>.</dd>
+        </dl>
+      </section>
+      <section class="informative" id="discussion-topics-1" typeof="bibo:Chapter" resource="#discussion-topics-1" property="bibo:hasPart">
+        <h3 id="h-discussion-topics-1" resource="#h-discussion-topics-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.6 </span>Discussion topics</span></h3><p><em>This section is non-normative.</em></p>
+        <p>The following observations are made about this option:</p>
+        <ul>
+          <li>
+            This option satisfies all requirements that Option 1 satisfies.
+          </li>
+          <li>
+            Advantages over Option 1a:
+            <ul>
+              <li>Relative URL and Base URL processing is avoided entirely
+              while ensuring that short identifiers can be used.</li>
+              <li>The Web Payments Working Group only has to maintain a
+              short identifier mapping file, not a complete payment method
+              identifier registry.</li>
+              <li>Hard coding and/or aggressive caching of the short identifier
+              mappings are encouraged as changes to the short identifiers
+              are disallowed after every major release.</li>
+              <li>Machine-readable information is encouraged to be published at
+              payment method identifier URLs but is not required.</li>
+            </ul>
+          </li>
+          <li>
+            Disadvantages wrt. Option 1a:
+            <ul>
+              <li>
+                None
+              </li>
+            </ul>
+        </li></ul>
+      </section>
+    </section>
+    <section id="option-2" typeof="bibo:Chapter" resource="#option-2" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-option-2" resource="#h-option-2"><span property="xhv:role" resource="xhv:heading"><span class="secno">6. </span>Option 2</span></h2>
+      <p>This section describes an approach to payment method identifiers using strings that might be reverse domain names.</p>
+
+      <section id="identifier-format-2" typeof="bibo:Chapter" resource="#identifier-format-2" property="bibo:hasPart">
+        <h3 id="h-identifier-format-2" resource="#h-identifier-format-2"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.1 </span>Identifier format</span></h3>
+        <p>Payment method identifiers are strings. The strings can contain any characters.</p>
+        <p>Payment method identifiers that are not created by the Working Group <em class="rfc2119" title="MUST">MUST</em> be <a href="#dfn-reverse-domain-name" class="internalDFN" data-link-type="dfn">reverse domain name</a> strings
+        with at least one U+002E FULL STOP character. They <em class="rfc2119" title="SHOULD">SHOULD</em> be based on domain names controlled by the creator.</p>
+        <p>It is <em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em> that payment methods use simple lower-case ASCII identifier strings.</p>
+      </section>
+      <section id="short-identifiers-1" typeof="bibo:Chapter" resource="#short-identifiers-1" property="bibo:hasPart">
+        <h3 id="h-short-identifiers-1" resource="#h-short-identifiers-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.2 </span>Short identifiers</span></h3>
+        <p>Payment method identifiers that do not contain any U+002E FULL STOP characters <em class="rfc2119" title="MAY">MAY</em> be created by the Working Group.
+        These identifiers <em class="rfc2119" title="MAY">MAY</em> be aliases for reverse domain name identifiers that do contain U+002E FULL STOP characters. If this is
+        the case then implementations <em class="rfc2119" title="MUST">MUST</em> process the identifier as if the reverse domain name form had been provided.</p>
+        <div class="note"><div class="note-title marker" aria-level="4" role="heading" id="h-note2"><span>Note</span></div><p class="">Any registration mechanism must allow a payment app to be registered with multiple aliases representing
+        the same payment method identifier.</p></div>
+      </section>
+      <section id="identifier-equivalence-2" typeof="bibo:Chapter" resource="#identifier-equivalence-2" property="bibo:hasPart">
+        <h3 id="h-identifier-equivalence-2" resource="#h-identifier-equivalence-2"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.3 </span>Identifier equivalence</span></h3>
+        <p>Payment method identifier strings are compared using case-sensitive matching.</p>
+        <p>If a short identifier containing no U+002E FULL STOP characters is an alias for a reverse domain name identifier then
+        the reverse domain name identifier should be used in any comparison.</p>
+      </section>
+      <section id="dependencies-2" typeof="bibo:Chapter" resource="#dependencies-2" property="bibo:hasPart">
+        <h3 id="h-dependencies-2" resource="#h-dependencies-2"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.4 </span>Dependencies</span></h3>
+        <p>A <dfn data-dfn-type="dfn" id="dfn-reverse-domain-name">reverse domain name</dfn> is defined by [<cite><a class="bibref" href="#bib-REVERSEDOMAINS">REVERSEDOMAINS</a></cite>]. For example, <code>com.example.somemethod</code>.</p>
+      </section>
+      <section class="informative" id="discussion-topics-2" typeof="bibo:Chapter" resource="#discussion-topics-2" property="bibo:hasPart">
+        <h3 id="h-discussion-topics-2" resource="#h-discussion-topics-2"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.5 </span>Discussion topics</span></h3><p><em>This section is non-normative.</em></p>
+        <p>The following observations are made about this option:</p>
+        <ul>
+          <li>
+            This option satisfies <a href="#req1">requirement 1</a> because the Working Group can specify
+            identifiers from reverse domains that the Working Group controls.
+          </li>
+          <li>
+            This option satisfies <a href="#req2">requirement 2</a> because anybody can specify
+            identifiers from reverse domains that they control.
+          </li>
+          <li>
+            This option satisfies <a href="#req3">requirement 3</a> because the Working Group can specify
+            common payment method identifiers as short strings that do not contain a
+            U+002E FULL STOP character.
+          </li>
+          <li>
+            This option satisfies <a href="#req4">requirement 4</a> because it is within your control to
+            create identifiers from domains that you control that are globally unique.
+          </li>
+          <li>
+            Advantages:
+            <ul>
+              <li>Identifiers are relatively short strings even in the reverse domain case.</li>
+              <li>It is straightforward to create new identifiers from a domain you control and
+              there is no ambiguity about its use or purpose.</li>
+            </ul>
+          </li>
+          <li>
+            Disadvantages:
+            <ul>
+              <li>There is no way to automatically dereference a payment method identifier from this
+              option to a resource located at a URL.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="appendix" id="issues" typeof="bibo:Chapter" resource="#issues" property="bibo:hasPart">
+      <!--OddPage--><h2 id="h-issues" resource="#h-issues"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span>Issues</span></h2>
+
+        <p>The following issues are tracking aspects of the payment method identifier specification:</p>
+
+        <div class="issue" id="issue-11"><div class="issue-title marker" aria-level="3" role="heading" id="h-issue5"><a href="https://github.com/w3c/browser-payment-api/issues/11"><span>Issue 11</span></a><span style="text-transform: none">: What is the format for payment method identifiers for distributed extensibility</span></div><div class="">
+          <p>Should the format of the identifiers be URLs (e.g. http://example.com/paymentmethod) or reverse host name (e.g. com.example.paymentmethod) or some other extensible syntax?</p>
+          <p>If the identifier is a URL, should there be a resource that can be fetched from the URL?</p>
+          <p>Is there a need to describe the payment method at the URL or provide some other information?</p>
+        </div></div>
+
+        <div class="issue" id="issue-10"><div class="issue-title marker" aria-level="3" role="heading" id="h-issue6"><a href="https://github.com/w3c/browser-payment-api/issues/10"><span>Issue 10</span></a><span style="text-transform: none">: Should well-known identifiers be used for ubiquitous payment methods</span></div><div class="">
+          <p>Should there be well-known identifiers that are simple strings defined in the spec that don't conform to the distributed extensbility syntax that are used for common payment methods?</p>
+        </div></div>
+
+        <div class="issue" id="issue-12"><div class="issue-title marker" aria-level="3" role="heading" id="h-issue7"><a href="https://github.com/w3c/browser-payment-api/issues/12"><span>Issue 12</span></a><span style="text-transform: none">: Write-up initial proposal for payment app registration spec</span></div><div class="">
+          <p>A registration mechanism may exist to install the code for new payment methods into the user agent. This process
+            would add support for a new payment method to the user agent. This mechanism should be defined in a separate specification.</p>
+          <p>There is an initial <a href="https://github.com/WICG/paymentrequest/blob/gh-pages/docs/registration.md">outline making a proposal</a>.</p>
+        </div></div>
+    </section>
+
+  
+
+<section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" property="bibo:hasPart"><!--OddPage--><h2 id="h-references" resource="#h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">B. </span>References</span></h2><section id="normative-references" typeof="bibo:Chapter" resource="#normative-references" property="bibo:hasPart"><h3 id="h-normative-references" resource="#h-normative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">B.1 </span>Normative references</span></h3><dl class="bibliography" resource=""><dt id="bib-PAYMENTREQUESTAPI">[PAYMENTREQUESTAPI]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="paymentrequest.html" property="dc:requires"><cite>Payment Request API</cite></a>. W3C Editor's Draft. URL: <a href="paymentrequest.html" property="dc:requires">paymentrequest.html</a>
+</dd><dt id="bib-url-1-20141209">[url-1-20141209]</dt><dd>Anne van Kesteren; Sam Ruby. W3C. <a href="http://www.w3.org/TR/2014/WD-url-1-20141209/" property="dc:requires"><cite>URL</cite></a>. 9 December 2014. W3C Working Draft. URL: <a href="http://www.w3.org/TR/2014/WD-url-1-20141209/" property="dc:requires">http://www.w3.org/TR/2014/WD-url-1-20141209/</a>
+</dd></dl></section><section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart"><h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">B.2 </span>Informative references</span></h3><dl class="bibliography" resource=""><dt id="bib-REVERSEDOMAINS">[REVERSEDOMAINS]</dt><dd><a href="https://en.wikipedia.org/wiki/Reverse_domain_name_notation" property="dc:references"><cite>Reverse Domain Name Notation</cite></a>. URL: <a href="https://en.wikipedia.org/wiki/Reverse_domain_name_notation" property="dc:references">https://en.wikipedia.org/wiki/Reverse_domain_name_notation</a>
+</dd></dl></section></section><p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to Top">↑</abbr></a></p><script async="" defer="" src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>
