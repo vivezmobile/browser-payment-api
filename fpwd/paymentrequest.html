@@ -478,7 +478,8 @@ table.exceptions table {
 </style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--><script id="initialUserConfig" type="application/json">{
   "shortName": "payment-request",
   "edDraftURI": "https://w3c.github.io/browser-payment-api/paymentrequest.html",
-  "specStatus": "ED",
+  "specStatus": "FPWD",
+  "publishDate": "2016-04-21",
   "editors": [
     {
       "name": "Adrian Bateman",
@@ -507,35 +508,37 @@ table.exceptions table {
   "localBiblio": {
     "PAYMENTARCH": {
       "title": "Payment Request Architecture",
-      "href": "architecture.html",
+      "href": "https://w3c.github.io/browser-payment-api/specs/architecture.html",
       "authors": [
         "Adrian Bateman",
         "Zach Koch",
-        "Richard Barnes"
+        "Richard Barnes",
+        "Roy McElmurry"
       ],
       "status": "ED"
     },
     "METHODIDENTIFIERS": {
       "title": "Payment Method Identifiers",
-      "href": "method-identifiers.html",
+      "href": "https://www.w3.org/TR/payment-method-id/",
       "authors": [
         "Adrian Bateman",
         "Zach Koch",
-        "Richard Barnes"
+        "Richard Barnes",
+        "Roy McElmurry"
       ],
       "status": "ED"
     }
   }
 }</script></head>
-  <body class="h-entry toc-sidebar" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <body class="h-entry toc-inline" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
   <p>
             <a class="logo" href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" alt="W3C"></a>
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Payment Request API</h1>
-  <h2 id="w3c-first-public-working-draft-19-april-2016"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2016-04-19">19 April 2016</time></h2>
+  <h2 id="w3c-first-public-working-draft-21-april-2016"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2016-04-21">21 April 2016</time></h2>
   <dl>
       <dt>This version:</dt>
-      <dd><a class="u-url" href="http://www.w3.org/TR/2016/WD-payment-request-20160419/">http://www.w3.org/TR/2016/WD-payment-request-20160419/</a></dd>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2016/WD-payment-request-20160421/">http://www.w3.org/TR/2016/WD-payment-request-20160421/</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/payment-request/">http://www.w3.org/TR/payment-request/</a></dd>
       <dt>Latest editor's draft:</dt>
@@ -1740,9 +1743,9 @@ interface <span class="idlInterfaceID">PaymentRequestUpdateEvent</span> : <span 
 </dd><dt id="bib-ECMA-262-2015">[ECMA-262-2015]</dt><dd>Allen Wirfs-Brock. Ecma International. <a href="http://www.ecma-international.org/ecma-262/6.0/index.html" property="dc:requires"><cite>ECMA-262 6th Edition, The ECMAScript 2015 Language Specification</cite></a>. June 2015. Standard. URL: <a href="http://www.ecma-international.org/ecma-262/6.0/index.html" property="dc:requires">http://www.ecma-international.org/ecma-262/6.0/index.html</a>
 </dd><dt id="bib-HTML5">[HTML5]</dt><dd>Ian Hickson; Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. W3C. <a href="http://www.w3.org/TR/html5/" property="dc:requires"><cite>HTML5</cite></a>. 28 October 2014. W3C Recommendation. URL: <a href="http://www.w3.org/TR/html5/" property="dc:requires">http://www.w3.org/TR/html5/</a>
 </dd><dt id="bib-ISO4217">[ISO4217]</dt><dd><cite><a href="http://www.iso.org/iso/home/standards/currency_codes.htm">ISO 4217: Codes for the representation of currencies and funds</a></cite>. ISO.
-</dd><dt id="bib-METHODIDENTIFIERS">[METHODIDENTIFIERS]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="method-identifiers.html" property="dc:requires"><cite>Payment Method Identifiers</cite></a>. W3C Editor's Draft. URL: <a href="method-identifiers.html" property="dc:requires">method-identifiers.html</a>
-</dd><dt id="bib-POWERFUL-FEATURES">[POWERFUL-FEATURES]</dt><dd>Mike West; Yan Zhu. W3C. <a href="http://www.w3.org/TR/powerful-features/" property="dc:requires"><cite>Privileged Contexts</cite></a>. 24 April 2015. W3C Working Draft. URL: <a href="http://www.w3.org/TR/powerful-features/" property="dc:requires">http://www.w3.org/TR/powerful-features/</a>
+</dd><dt id="bib-METHODIDENTIFIERS">[METHODIDENTIFIERS]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes; Roy McElmurry. <a href="https://www.w3.org/TR/payment-method-id/" property="dc:requires"><cite>Payment Method Identifiers</cite></a>. W3C Editor's Draft. URL: <a href="https://www.w3.org/TR/payment-method-id/" property="dc:requires">https://www.w3.org/TR/payment-method-id/</a>
+</dd><dt id="bib-POWERFUL-FEATURES">[POWERFUL-FEATURES]</dt><dd>Mike West. W3C. <a href="http://www.w3.org/TR/powerful-features/" property="dc:requires"><cite>Secure Contexts</cite></a>. 13 April 2016. W3C Working Draft. URL: <a href="http://www.w3.org/TR/powerful-features/" property="dc:requires">http://www.w3.org/TR/powerful-features/</a>
 </dd><dt id="bib-RFC2119">[RFC2119]</dt><dd>S. Bradner. IETF. <a href="https://tools.ietf.org/html/rfc2119" property="dc:requires"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119" property="dc:requires">https://tools.ietf.org/html/rfc2119</a>
 </dd><dt id="bib-WEBIDL">[WEBIDL]</dt><dd>Cameron McCormack; Boris Zbarsky. W3C. <a href="http://www.w3.org/TR/WebIDL-1/" property="dc:requires"><cite>WebIDL Level 1</cite></a>. 8 March 2016. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/WebIDL-1/" property="dc:requires">http://www.w3.org/TR/WebIDL-1/</a>
-</dd></dl></section><section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart"><h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.2 </span>Informative references</span></h3><dl class="bibliography" resource=""><dt id="bib-PAYMENTARCH">[PAYMENTARCH]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes. <a href="architecture.html" property="dc:references"><cite>Payment Request Architecture</cite></a>. W3C Editor's Draft. URL: <a href="architecture.html" property="dc:references">architecture.html</a>
+</dd></dl></section><section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart"><h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.2 </span>Informative references</span></h3><dl class="bibliography" resource=""><dt id="bib-PAYMENTARCH">[PAYMENTARCH]</dt><dd>Adrian Bateman; Zach Koch; Richard Barnes; Roy McElmurry. <a href="https://w3c.github.io/browser-payment-api/specs/architecture.html" property="dc:references"><cite>Payment Request Architecture</cite></a>. W3C Editor's Draft. URL: <a href="https://w3c.github.io/browser-payment-api/specs/architecture.html" property="dc:references">https://w3c.github.io/browser-payment-api/specs/architecture.html</a>
 </dd></dl></section></section><p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to Top">↑</abbr></a></p><script async="" defer="" src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>
